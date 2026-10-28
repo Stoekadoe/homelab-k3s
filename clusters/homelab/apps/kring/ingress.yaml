@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kring
+  annotations:
+    # VUL IN: dezelfde ClusterIssuer als je andere apps (kubectl get clusterissuer)
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.middlewares: auth-forward-auth@kubernetescrd
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts: [kring.idefx.nl]
+      secretName: kring-tls
+  rules:
+    - host: kring.idefx.nl
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kring
+                port:
+                  name: http
