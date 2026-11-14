@@ -1,0 +1,13 @@
+# All Mesh diagrams (/data/diagrams/<id>.json). Never delete, recreate or resize — see mesh-suite/CLAUDE.md.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mesh-data
+  annotations:
+    kustomize.toolkit.fluxcd.io/prune: disabled
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 1Gi
