@@ -25,7 +25,7 @@ spec:
       containers:
         - name: mesh
           # The tag below is updated by the pipeline of stoekadoe/mesh.
-          image: ghcr.io/stoekadoe/mesh:sha-90c055b
+          image: ghcr.io/stoekadoe/mesh:sha-3dff14d
           ports:
             - containerPort: 8080
               name: http
