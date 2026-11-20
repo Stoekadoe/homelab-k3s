@@ -1,0 +1,13 @@
+# All Shelf links and thumbnails (/data/shelf.json, /data/thumbs/, /data/history/). Never delete, recreate or resize — see shelf-suite/CLAUDE.md.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shelf-data
+  annotations:
+    kustomize.toolkit.fluxcd.io/prune: disabled
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 1Gi

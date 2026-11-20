@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shelf
+  labels: { app: shelf }
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate          # RWO volume: stop the old pod first
+  selector:
+    matchLabels: { app: shelf }
+  template:
+    metadata:
+      labels: { app: shelf }
+    spec:
+      imagePullSecrets:
+        - name: ghcr-pull
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile: { type: RuntimeDefault }
+      automountServiceAccountToken: false
+      containers:
+        - name: shelf
+          # The tag below is updated by the pipeline of stoekadoe/shelf.
+          image: ghcr.io/stoekadoe/shelf:main
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - { name: DATA_DIR, value: /data }
+          volumeMounts:
+            - { name: data, mountPath: /data }
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: { drop: [ALL] }
+          resources:
+            requests: { cpu: 10m, memory: 48Mi }
+            limits: { memory: 160Mi }
+          readinessProbe:
+            httpGet: { path: /healthz, port: http }
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /healthz, port: http }
+            initialDelaySeconds: 10
+            periodSeconds: 30
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: shelf-data
