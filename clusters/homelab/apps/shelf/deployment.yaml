@@ -25,7 +25,7 @@ spec:
       containers:
         - name: shelf
           # The tag below is updated by the pipeline of stoekadoe/shelf.
-          image: ghcr.io/stoekadoe/shelf:sha-c09b060
+          image: ghcr.io/stoekadoe/shelf:sha-7e907d1
           ports:
             - containerPort: 8080
               name: http
