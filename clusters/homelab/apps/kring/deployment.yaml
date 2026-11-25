@@ -25,7 +25,7 @@ spec:
       containers:
         - name: kring
           # De tag hieronder wordt door de pipeline van stoekadoe/kring bijgewerkt.
-          image: ghcr.io/stoekadoe/kring:sha-8d7e7cb
+          image: ghcr.io/stoekadoe/kring:sha-24bf5ae
           ports:
             - containerPort: 8080
               name: http
